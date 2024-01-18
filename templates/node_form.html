@@ -1,0 +1,51 @@
+{% load static %}
+<link href="{% static '/custom.css' %}" rel="stylesheet" />
+
+<main>
+	<section>
+		<form action="{% url 'tree:create_node' %}" id="nodeCreateForm" method='post'>
+            {% csrf_token %}
+            <h1 style='text-align:center;'>Create Node</h1>
+            <label for="node-name">Name</label>
+            <input type="text" name="node_name" id="node_name" placeholder="Enter the node name" required>
+
+            {% if parent_node %}
+            <label for="node-name">Parent Node</label>
+            <select class='select-box' name='parent_node' required> 
+                <option value=''>{% if not nodes %}No nodes to select {% else %} Select a node from below{% endif %}</option>
+                {% if nodes %}
+                    {% for node in nodes %}
+                    <option value="{{node.id}}">{{node.name}}</option>
+                    {% endfor %}
+                {% endif %}
+            <select>
+            {% endif %}
+
+            
+            {% if parent_node %}
+            <label for="node-name">Select Node Position</label>
+            <select class='select-box' name='position' required> 
+                <option value="1">Left</option>
+                <option value="2">Right</option>
+            <select>
+            {% endif %}
+            <button type="submit">Create</button>
+		</form>
+
+        {% for msg in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong class='alert-msg'>{{msg}}</strong> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span class='close-btn' aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+	</section>
+</main>
+<script>
+    $('.close-btn').click({
+        alert('hello')
+        $('.alert-msg').hide()
+    })
+</script>
+
